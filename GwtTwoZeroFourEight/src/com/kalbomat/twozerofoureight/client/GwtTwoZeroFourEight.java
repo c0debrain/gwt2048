@@ -27,7 +27,6 @@ import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.IsWidget;
