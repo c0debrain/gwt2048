@@ -510,7 +510,6 @@ public class GwtTwoZeroFourEight implements EntryPoint
 		
 		fp.addTouchStartHandler(new TouchStartHandler()
 		{
-
 			@Override
 			public void onTouchStart(TouchStartEvent event) 
 			{
@@ -542,7 +541,7 @@ public class GwtTwoZeroFourEight implements EntryPoint
 						int directionY = touch.getPageY() - touchY;
 						
 						if(Math.abs(directionX) > Math.abs(directionY))
-						{
+						{ 
 							if(directionX > 0)
 							{
 								direction = Direction.RIGHT;
