@@ -9,13 +9,25 @@ import com.google.gwt.canvas.dom.client.Context2d.TextBaseline;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.dom.client.Touch;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.GestureStartEvent;
+import com.google.gwt.event.dom.client.GestureStartHandler;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.TouchCancelEvent;
+import com.google.gwt.event.dom.client.TouchCancelHandler;
+import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchEndHandler;
+import com.google.gwt.event.dom.client.TouchMoveEvent;
+import com.google.gwt.event.dom.client.TouchMoveHandler;
+import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -54,6 +66,12 @@ public class GwtTwoZeroFourEight implements EntryPoint
 	private boolean checkForEndOftheGame = false;
 	private boolean running = false;
 	private Timer timer;
+	
+	private boolean touchCanceled = false;
+	private boolean touchMoved = false;
+	private int touchX;
+	private int touchY;
+	private Direction direction;
 	
 	private Anchor about;
 	private AboutWindow aboutWindow;
@@ -487,6 +505,96 @@ public class GwtTwoZeroFourEight implements EntryPoint
 					event.preventDefault();
 					break;
 				}
+			}
+		});
+		
+		fp.addTouchStartHandler(new TouchStartHandler()
+		{
+
+			@Override
+			public void onTouchStart(TouchStartEvent event) 
+			{
+				event.preventDefault();
+				touchCanceled = false;
+				touchMoved = false;
+				if (event.getTouches().length() > 0)
+				{
+					Touch touch = event.getTouches().get(0);
+					touchX = touch.getPageX();
+					touchY = touch.getPageY();
+				}
+			}
+		});
+		
+		fp.addTouchMoveHandler(new TouchMoveHandler() 
+		{	
+			@Override
+			public void onTouchMove(TouchMoveEvent event) 
+			{
+				event.preventDefault();
+				if (event.getTouches().length() > 0)
+				{
+					Touch touch = event.getTouches().get(0);
+					if (Math.abs(touch.getPageX() - touchX) > 5 || Math.abs(touch.getPageY() - touchY) > 5) 
+					{
+						touchMoved = true;
+						int directionX = touch.getPageX() - touchX;
+						int directionY = touch.getPageY() - touchY;
+						
+						if(Math.abs(directionX) > Math.abs(directionY))
+						{
+							if(directionX > 0)
+							{
+								direction = Direction.RIGHT;
+							}
+							else
+							{
+								direction = Direction.LEFT;
+							}
+						}
+						else
+						{
+							if(directionY > 0)
+							{
+								direction = Direction.DOWN;
+							}
+							else
+							{
+								direction = Direction.UP;
+							}
+						}
+					}
+				}
+			}
+		});			
+		
+		fp.addTouchEndHandler(new TouchEndHandler() 
+		{			
+			@Override
+			public void onTouchEnd(TouchEndEvent event) 
+			{
+				event.preventDefault();				
+				if(touchMoved && !touchCanceled)
+				{
+					createMove(direction);					
+				}
+			}
+		});
+		
+		fp.addTouchCancelHandler(new TouchCancelHandler() 
+		{	
+			@Override
+			public void onTouchCancel(TouchCancelEvent event) 
+			{
+				touchCanceled = true;
+			}
+		});
+		
+		fp.addGestureStartHandler(new GestureStartHandler() 
+		{
+			public void onGestureStart(GestureStartEvent event) 
+			{
+				event.preventDefault();
 			}
 		});
 		
