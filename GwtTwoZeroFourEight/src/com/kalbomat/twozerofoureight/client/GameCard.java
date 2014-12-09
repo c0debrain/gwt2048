@@ -14,7 +14,7 @@ public class GameCard extends RoundSquare
 	public static final int CARD_WIDTH = 110;
 	public static Map<Integer, GameCardSetting> gameCardSettingsMap = createGameCartSettings();
 	private static final Position NEW_CARD_POSITION = new Position(25, 25);
-	private static final Position ANIMATION_FADEOUT = new Position(1, 1);
+	private static final Position ANIMATION_EXPAND = new Position(1, 1);
 	private static final Position ANIMATION_NEW_CARD = new Position(5, 5);
 	
 	private int value;
@@ -85,17 +85,17 @@ public class GameCard extends RoundSquare
 	{
 		switch (animationUpdateType)
 		{
-		case UPDATE:
+		case TRANSITION:
 			if(previousPosition != null) 
 			{
 				previousPosition.add(step);
 			}
 			break;
 			
-		case FADEOUTUPDATE:
+		case EXPAND:
 			if(combined) 
 			{
-				previousPosition.sub(ANIMATION_FADEOUT);
+				previousPosition.sub(ANIMATION_EXPAND);
 				update(getPosition(), getWidth() + 2);
 			}
 			break;

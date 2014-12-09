@@ -207,12 +207,12 @@ public class GwtTwoZeroFourEight implements EntryPoint
 			{
 				if(i < ANIMATION_STEPS)
 				{
-					doUpdate(AnimationUpdateType.UPDATE);
+					doUpdate(AnimationUpdateType.TRANSITION);
 					drawGame();
 				}
 				else if(i >= ANIMATION_STEPS && i < 2 * ANIMATION_STEPS)
 				{
-					doUpdate(AnimationUpdateType.FADEOUTUPDATE);
+					doUpdate(AnimationUpdateType.EXPAND);
 					drawGame();
 				}
 				else if(i >= 2 * ANIMATION_STEPS && i < 3 * ANIMATION_STEPS)
@@ -699,7 +699,7 @@ public class GwtTwoZeroFourEight implements EntryPoint
 	
 	enum AnimationUpdateType
 	{
-		UPDATE, FADEOUTUPDATE, NEWCARDUPDATE;
+		TRANSITION, EXPAND, NEWCARDUPDATE;
 	}
 	
 	public interface IHeaderWidget extends IsWidget
